@@ -11,8 +11,6 @@ group :development, :test do
 
   # gem 'webmock'
   gem 'rspec'
-  gem 'cucumber'
-  gem 'aruba'
 
   gem 'guard', require: false
   gem 'guard-rspec', require: false
