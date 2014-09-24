@@ -7,6 +7,8 @@ ruby '2.1.2'
 gem 'mongoid'
 
 group :development, :test do
+  gem 'rake'
+
   # gem 'webmock'
   gem 'rspec'
   gem 'cucumber'
