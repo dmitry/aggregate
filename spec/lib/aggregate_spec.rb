@@ -1,13 +1,26 @@
 require 'spec_helper'
 
 describe Aggregate do
-  describe '#clear' do
-    it 'removes schemas' do
+  describe 'reset' do
+    it 'resets schema definitions' do
       expect(Aggregate.schemas.size).to eq 0
-      Aggregate.schema(:post) { }
+      Aggregate.schema(:blog) { }
       expect(Aggregate.schemas.size).to eq 1
-      Aggregate.clear
+      Aggregate.reset
       expect(Aggregate.schemas.size).to eq 0
+    end
+
+    it 'resets schema models' do
+      Aggregate.schema(:blog) do
+        document :post do
+        end
+      end
+
+      expect(Aggregate::Schema.constants).to eq [:BlogPost]
+
+      Aggregate.reset
+
+      expect(Aggregate::Schema.constants).to eq []
     end
   end
 
@@ -23,16 +36,25 @@ describe Aggregate do
       end
     end
 
-    it 'key' do
-      expect(Aggregate.schemas).to have_key(:forum)
+    context 'defines' do
+      it 'key' do
+        expect(Aggregate.schemas).to have_key(:forum)
+      end
+
+      it 'items' do
+        expect(Aggregate.schemas.size).to eq 1
+      end
     end
 
-    it 'items' do
-      expect(Aggregate.schemas.size).to eq 1
-    end
+    context 'fetches' do
+      it 'have the same block' do
+        schema = Aggregate.schemas[:forum]
+        expect(Aggregate.schema(:forum)).to eq schema
+      end
 
-    it 'be a class' do
-      expect(Aggregate.schema(:forum)).to be_kind_of(Aggregate::Schema)
+      it 'is Schema class' do
+        expect(Aggregate.schema(:forum)).to be_kind_of(Aggregate::Schema)
+      end
     end
   end
 end
