@@ -4,4 +4,8 @@ class Aggregate::Resource
 
     instance_exec(&block)
   end
+
+  def all(every)
+    # TODO implement
+  end
 end
